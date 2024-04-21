@@ -15,7 +15,7 @@ def setup():
 
 @task
 def test():
-    sh('python -m coverage run --source src -m unittest discover -s test')
+    sh('python -m coverage run --source src --omit="src/evaluator_GUI.py" -m unittest discover -s test')
     sh('python -m coverage html')
     sh('python -m coverage report --show-missing')
 
@@ -36,6 +36,9 @@ def radon():
     if os.stat("radon.report").st_size != 0:
         raise Exception('radon found complex code')
 
+@task
+def run():
+    sh('python src/evaluator_GUI.py')
 @task
 @needs(['setup', 'clean', 'test', 'radon'])
 def default():
